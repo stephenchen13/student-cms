@@ -50,6 +50,9 @@ h2#tagline {
 	opacity: 0.8;
 }
 
+
+
+
 #navcontainer {
 	width: 200px;
 }
@@ -71,7 +74,16 @@ img.person {
 	width: 60px;
 }
 
-.mcnamee-profile-photo {   
+.profile-photo img{
+	height: 200px;
+	width: 200px;
+	padding: 0;
+	-moz-border-radius: 100px;
+	-webkit-border-radius: 100px;
+	border-radius: 100px;
+}
+
+div.mcnamee-profile-photo {   
 height: 200px;
 width: 200px;
 background: url(../images/kevin_mcnamee.png) no-repeat -2px -2px;
