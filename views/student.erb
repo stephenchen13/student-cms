@@ -149,7 +149,8 @@
 
           <h2> Github Feed</h2>
 
-            <script language="JavaScript" src="http://itde.vccs.edu/rss2js/feed2js.php?src=https%3A%2F%2Fgithub.com%2Fstephenchen13.atom&chan=n&num=5&desc=1&date=n&targ=y" type="text/javascript"></script>
+          <% github = @student.social_github.link.split('github.com/') %>
+            <script language="JavaScript" src="http://itde.vccs.edu/rss2js/feed2js.php?src=https%3A%2F%2Fgithub.com%2F<%= github[1] %>.atom&chan=n&num=5&desc=1&date=n&targ=y" type="text/javascript"></script>
 
             <noscript>
             <a href="http://itde.vccs.edu/rss2js/feed2js.php?src=https%3A%2F%2Fgithub.com%2Fcreekace.atom&chan=n&num=5&desc=1&date=n&targ=y&html=y">View RSS feed</a>
