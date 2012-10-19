@@ -160,20 +160,22 @@
         </div>
 
         <div class="one_half last">
-
-          <%  %>
-
-            <a class="twitter-timeline" href="https://twitter.com/mcnameekm" data-widget-id="256016587201585152">Tweets by @mcnameekm</a>
-            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="http://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+          <% if @student.send("social_twitter") %>
+            <a class="twitter-timeline" href="<%= @student.send("social_twitter").link %>" data-widget-id="<%= @student.twitter_widget_id.to_s %>">Tweets by @<%= @student.send("social_twitter").link.match(".com\/(.+)")[1] %></a>
+            <% if @student.twitter_widget_id.nil? %>
+              <h3>This lazy bum didn't create a twitter wideget!</h3>
+            <% else %>
+              <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="http://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+            <% end %>
+          <% else %>
+            <h3>This crazy guy doesn't use twitter!</h3>
+          <% end %>
 
 
         </div>
-      <div class="clear"></div>
+        <div class="clear"></div>
         <h2 class="title">&nbsp;</h2>
-
-
-
-        </div>
+      </div>
     </div>
   </section>
 </body>
