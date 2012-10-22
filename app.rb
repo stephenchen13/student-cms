@@ -3,7 +3,8 @@ require 'sinatra'
 require './students'
 
 get "/" do
-	
+	@students = Students.all_students
+	erb :index
 end
 
 get "/students/:id_or_name" do |id_or_name|
