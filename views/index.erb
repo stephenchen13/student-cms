@@ -41,19 +41,22 @@
           <% else %>
              <div class="one_third">
           <% end %>
-            <a href="/students/<%=student.id%>"><img class="person" src="<%= student.photo %>" alt="<%= student.name %>"/>
+            <a href="/students/<%=student.id%>"><img class="person" src="<%= student.thumbnail %>" alt="<%= student.name %>"/>
               <div class="name-position">
                 <h2><%= student.name %></h2>
-                <div class="position">Music ♥ Tech.  Bikram Yogi.</div>
+                <div class="position"><%= student.catchphrase %></div>
               </div>
               <div class="clear"></div>
             </a>
-            <p class="excerpt">An interaction designer and rails developer who has worked in tech and music for 12 years.  Notable clients include Britney Spears, Diddy, and 50 Cent.</p>
+            <p class="excerpt"><%= student.introduction %></p>
           </div>
 
+          <% if (index + 1) % 3 == 0 %>
+          <div class="clear"></div> 
+          <% end %>
         <%end %>
 
-        <div class="clear"></div>
+
       </div>
       <div class="clear"></div>
     </div>

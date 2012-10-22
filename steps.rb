@@ -6,9 +6,9 @@ require 'sqlite3'
 
 @db = SQLite3::Database.open('flatiron.db')
 
-def insert_student(name, tagline, bio, photo, twitter_widget_id) 
-	@db.execute( "INSERT INTO students (name, tagline, bio, photo, twitter_widget_id)
-	VALUES (?,?,?,?,?)", [name, tagline, bio, photo, twitter_widget_id] )
+def insert_student(name, tagline, catchphrase, introduction, bio, photo, thumbnail, twitter_widget_id) 
+	@db.execute( "INSERT INTO students (name, tagline, catchphrase, introduction, bio, photo, thumbnail, twitter_widget_id)
+	VALUES (?,?,?,?,?,?,?,?)", [name, tagline, catchphrase, introduction, bio, photo, thumbnail, twitter_widget_id] )
 end
 def find_id(name)
 	array_ids = @db.execute("SELECT id FROM students
@@ -28,24 +28,31 @@ end
 
 # open index to get all profile links
 index_page = Nokogiri::HTML(open("http://students.flatironschool.com/"))   
-links = index_page.css("div.one_third a:first").map { |link| link["href"] }
+all_css = Nokogiri::HTML(open("http://students.flatironschool.com/css/matz.css"))  
+
 # billy's profile doesnt match
-links.delete("billymizrahi.html")
+# links.delete("billymizrahi.html")
 
-all_css = Nokogiri::HTML(open("http://students.flatironschool.com/css/matz.css"))   
+students = index_page.css("div.one_third")
+students.each do |student|
+	name = student.css("h2")[0].text
+	thumbnail = student.css("img.person")[0]["src"]
+	catchphrase = student.css(".position")[0].text
+	introduction = student.css("p.excerpt").text
+	link = student.css("a:first")[0]["href"]
 
-links.each do |link|
 	student_page = Nokogiri::HTML(open("http://students.flatironschool.com/" << link.to_s)) 
-	name_selector = student_page.css("div.two_third h1")[0]
-	name = name_selector.nil? ? "" : name_selector.text
+	# name_selector = student_page.css("div.two_third h1")[0]
+	# name = name_selector.nil? ? "" : name_selector.text
 
 	tagline_selector = student_page.css("h2#tagline")[0]
-	tagline = name_selector.nil? ? "" : tagline_selector.text
+	tagline = tagline_selector.nil? ? "" : tagline_selector.text
 
 	description_selector = student_page.css("div.two_third p:first")[0]
 	description = description_selector.nil? ? "" : description_selector.text
 
-	photo_class = student_page.css("div#navcontainer div")[0]["class"]
+	photo_class_selector = student_page.css("div#navcontainer div")[0]
+	photo_class = photo_class_selector.nil? ? "" : photo_class_selector["class"]
 	my_css = all_css.css("p")[0].text.match(/.#{photo_class}\s*{(\s|.)*?}/)
 	my_css.to_s.match(/\.\.(.*)?\)/)
 
@@ -53,7 +60,7 @@ links.each do |link|
 	twitter_widget_id = twitter_widget_id_selector["data-widget-id"] unless twitter_widget_id_selector.nil?
 
 	# insert student
-	insert_student(name, tagline, description, $1, twitter_widget_id)
+	insert_student(name, tagline, catchphrase, introduction, description, $1, thumbnail, twitter_widget_id)
 	students_id = find_id(name)
 
 	# photo is in CSS, can we get this?
@@ -91,9 +98,9 @@ links.each do |link|
 		description = app_div.css("p").text
 		insert_apps(students_id, app_name, description)
 	end
-	# puts blog << " " << linkedin << " " << twitter
-	# puts name << " " << description
 end
-# puts index_page.class   # => Nokogiri::HTML::Document
+
+
+
 
 

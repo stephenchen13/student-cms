@@ -51,11 +51,14 @@ class Students
 		0 => :ID_INDEX,
 		1 => :NAME_INDEX,
 		2 => :TAGLINE_INDEX,
-		3 => :BIO_INDEX,
-		4 => :PHOTO_INDEX,
-		5 => :TWITTER_WIDGET_ID_INDEX
+		3 => :CATCHPHRASE_INDEX,
+		4 => :INTRODUCTION_INDEX,
+		5 => :BIO_INDEX,
+		6 => :PHOTO_INDEX,
+		7 => :THUMBNAIL_INDEX,
+		8 => :TWITTER_WIDGET_ID_INDEX
 	}
-	attr_accessor :name, :tagline, :bio, :twitter_widget_id, :photo, :id, :apps, :social
+	attr_accessor :name, :tagline, :catchphrase, :introduction, :thumbnail, :bio, :twitter_widget_id, :photo, :id, :apps, :social
 
 	def initialize
 		@apps = []
