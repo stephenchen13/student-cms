@@ -46,6 +46,7 @@ end
 
 class Students
 	@db = SQLite3::Database.open('flatiron.db')
+	@@students = []
 	ATTRIBUTE_INDEX = {
 		0 => :ID_INDEX,
 		1 => :NAME_INDEX,
@@ -58,6 +59,7 @@ class Students
 	def initialize
 		@apps = []
 		@social = []
+		@@students << self
 	end
 
 	def method_missing(method, *args, &block)
@@ -81,6 +83,16 @@ class Students
 
 	def self.find_by_id(id)
  		s = Students.new_from_db(id)
+ 	end
+
+ 	def self.all_students
+ 		students = []
+ 		student_info = @db.execute("SELECT * FROM students")
+ 		student_info.each do |info|
+ 			id = info[0]
+ 			students << Students.new_from_db(id)
+ 		end
+ 		students
  	end
 
  	private
