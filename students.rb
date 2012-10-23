@@ -2,10 +2,10 @@ require 'sqlite3'
 require 'rubygems'
 
 class Apps
-	attr_accessor :id, :students_id, :name, :description
+	attr_accessor :id, :student_id, :name, :description
 	APPS_INDEX = {
 		0 => :ID_INDEX,
-		1 => :STUDENTS_ID_INDEX,
+		1 => :STUDENT_ID_INDEX,
 		2 => :NAME_INDEX,
 		3 => :DESCRIPTION_INDEX
 	}
@@ -24,10 +24,10 @@ class Apps
 end
 
 class Socials
-	attr_accessor :id, :students_id, :name, :link
+	attr_accessor :id, :student_id, :name, :link
 	SOCIAL_INDEX = {
 		0 => :ID_INDEX,
-		1 => :STUDENTS_ID_INDEX,
+		1 => :STUDENT_ID_INDEX,
 		2 => :NAME_INDEX,
 		3 => :LINK_INDEX
 	}
@@ -45,8 +45,7 @@ class Socials
 end
 
 class Students
-	@db = SQLite3::Database.open('flatiron.db')
-	@@students = []
+	@db = SQLite3::Database.open('test.db')
 	ATTRIBUTE_INDEX = {
 		0 => :ID_INDEX,
 		1 => :NAME_INDEX,
@@ -60,10 +59,29 @@ class Students
 	}
 	attr_accessor :name, :tagline, :catchphrase, :introduction, :thumbnail, :bio, :twitter_widget_id, :photo, :id, :apps, :social
 
-	def initialize
+
+	def ==(item)
+		if item.is_a?(Students)
+			if self.name == item.name && self.bio ==item.bio
+				true
+			else
+				false
+			end
+		else
+			super
+		end
+	end
+
+	def initialize(name = "", tagline = "", bio = "")
+		@name = name
+		@tagline = tagline
+		@bio = bio
 		@apps = []
 		@social = []
-		@@students << self
+	end
+	def self.create_student_in_db(student)
+		@db.execute("INSERT INTO students (name, tagline, bio)
+		VALUES (?, ?, ?)", [student.name, student.tagline, student.bio])
 	end
 
 	def method_missing(method, *args, &block)
@@ -108,17 +126,18 @@ class Students
  	end
 
  	def self.write_main(id)
- 		raw_data = @db.execute("SELECT * FROM students WHERE id = #{id}").flatten
+ 		raw_data = @db.execute("SELECT * FROM students WHERE id = ?", id).flatten
  		student = Students.new
  		ATTRIBUTE_INDEX.each do |key_index, attribute|
 			method_name = attribute.to_s.gsub("_INDEX", "").downcase
  			student.send("#{method_name}=", raw_data[key_index])
  		end
  		student
+
  	end
 
  	def self.write_apps(student)
- 		raw_data = @db.execute("SELECT * FROM apps WHERE students_id = #{student.id}")
+ 		raw_data = @db.execute("SELECT * FROM apps WHERE student_id = ?", student.id)
  		raw_data.each do |row|
  			# create new app
  			app = Apps.new_from_db(row)
@@ -129,14 +148,14 @@ class Students
  	end
 
  	def self.write_social(student)
- 		raw_data = @db.execute("SELECT * FROM social WHERE students_id = #{student.id}")
+ 		raw_data = @db.execute("SELECT * FROM social WHERE student_id = ?", student.id)
  		raw_data.each do |row|
 			social = Socials.new_from_db(row)
 			student.social << social 		
  		end
  		student
  	end
+ 	# Students.new.send("ID_INDEX".gsub("_INDEX", "").downcase)
+ 	# Students.new.send("id=",raw_data[0])
 
- 	# Student.new.send("ID_INDEX".gsub("_INDEX", "").downcase)
- 	# Student.new.send("id=", raw_data[0])
 end

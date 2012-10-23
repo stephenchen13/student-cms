@@ -27,3 +27,4 @@ CREATE TABLE social (
 	name TEXT,
 	link TEXT
 );
+
