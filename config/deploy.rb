@@ -1,5 +1,5 @@
 set :application, "student_cms"
-set :repository,  "git@github.com:stephenchen13/student-cms.git"
+set :repository,  "https://github.com/stephenchen13/student-cms.git"
 
 set :user, 'schen'
 set :deploy_to, "/home/#{user}/#{application}"
