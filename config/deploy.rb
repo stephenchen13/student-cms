@@ -1,3 +1,5 @@
+require "bundler/capistrano"
+
 set :application, "student_cms"
 set :repository,  "https://github.com/stephenchen13/student-cms.git"
 
