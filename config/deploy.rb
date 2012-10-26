@@ -3,7 +3,7 @@
 set :application, "student_cms"
 set :repository,  "https://github.com/stephenchen13/student-cms.git"
 
-set :user, 'schen'
+set :user, 'mcnameekm'
 set :deploy_to, "/home/#{user}/#{application}"
 set :use_sudo, false
 
