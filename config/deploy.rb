@@ -12,8 +12,8 @@ set :scm, :git
 
 default_run_options[:pty] = true
 
-role :web, "96.8.123.70"                          # Your HTTP server, Apache/etc
-role :app, "96.8.123.70"                          # This may be the same as your `Web` server
+role :web, "96.8.123.73"                          # Your HTTP server, Apache/etc
+role :app, "96.8.123.73"                          # This may be the same as your `Web` server
 
 # if you want to clean up old releases on each deploy uncomment this:
 # after "deploy:restart", "deploy:cleanup"
