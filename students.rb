@@ -2,10 +2,10 @@ require 'sqlite3'
 require 'rubygems'
 
 class Apps
-	attr_accessor :id, :student_id, :name, :description
+	attr_accessor :id, :students_id, :name, :description
 	APPS_INDEX = {
 		0 => :ID_INDEX,
-		1 => :STUDENT_ID_INDEX,
+		1 => :STUDENTS_ID_INDEX,
 		2 => :NAME_INDEX,
 		3 => :DESCRIPTION_INDEX
 	}
@@ -24,10 +24,10 @@ class Apps
 end
 
 class Socials
-	attr_accessor :id, :student_id, :name, :link
+	attr_accessor :id, :students_id, :name, :link
 	SOCIAL_INDEX = {
 		0 => :ID_INDEX,
-		1 => :STUDENT_ID_INDEX,
+		1 => :STUDENTS_ID_INDEX,
 		2 => :NAME_INDEX,
 		3 => :LINK_INDEX
 	}
@@ -45,7 +45,7 @@ class Socials
 end
 
 class Students
-	@db = SQLite3::Database.open('test.db')
+	@db = SQLite3::Database.open('flatiron.db')
 	ATTRIBUTE_INDEX = {
 		0 => :ID_INDEX,
 		1 => :NAME_INDEX,
@@ -137,7 +137,7 @@ class Students
  	end
 
  	def self.write_apps(student)
- 		raw_data = @db.execute("SELECT * FROM apps WHERE student_id = ?", student.id)
+ 		raw_data = @db.execute("SELECT * FROM apps WHERE students_id = ?", student.id)
  		raw_data.each do |row|
  			# create new app
  			app = Apps.new_from_db(row)
@@ -148,7 +148,7 @@ class Students
  	end
 
  	def self.write_social(student)
- 		raw_data = @db.execute("SELECT * FROM social WHERE student_id = ?", student.id)
+ 		raw_data = @db.execute("SELECT * FROM social WHERE students_id = ?", student.id)
  		raw_data.each do |row|
 			social = Socials.new_from_db(row)
 			student.social << social 		
